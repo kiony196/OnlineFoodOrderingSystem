@@ -1,0 +1,57 @@
+﻿@model IEnumerable<OnlineFoodOrderingSystem.Models.Category>
+
+@{
+    ViewData["Title"] = "Food Categories";
+}
+
+<div class="container mt-4">
+    <h1>Food Categories</h1>
+
+    <p class="text-muted">
+        Browse the food categories available in our restaurant.
+    </p>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            No categories have been added yet.
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var category in Model)
+            {
+                var imageName = category.CategoryName switch
+                {
+                    "Burgers" => "burger.jpg",
+                    "Desserts" => "dessert.jpg",
+                    "Drinks" => "drinks.jpg",
+                    "Pizza" => "pizza.jpg",
+                    "Portuguese Food" => "portuguese-food.jpg",
+                    _ => "food-default.jpg"
+                };
+
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <img src="~/images/@imageName"
+                             class="card-img-top"
+                             alt="@category.CategoryName"
+                             style="height: 220px; object-fit: cover;" />
+
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                @category.CategoryName
+                            </h5>
+
+                            <p class="card-text">
+                                @(category.Description
+                                    ?? "No description available.")
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

@@ -1,0 +1,212 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="admin-dashboard-page">
+    <div class="container py-4">
+
+        <section class="admin-dashboard-hero">
+            <h1>⚙️ Admin Dashboard</h1>
+            <p>
+                Welcome to your control centre. Manage your restaurant,
+                customers and orders in one place.
+            </p>
+        </section>
+
+        <section class="admin-management-section">
+
+            <h2>Management Centre</h2>
+
+            <p class="admin-section-description">
+                Choose an area to manage your online restaurant.
+            </p>
+
+            <div class="admin-management-grid">
+
+                <!-- Food Management -->
+                <article class="admin-management-card">
+                    <div class="admin-card-icon">🍽️</div>
+                    <h3>Food Management</h3>
+                    <p>
+                        Add new dishes, update prices, change images
+                        and manage food availability.
+                    </p>
+                    <a asp-controller="Foods"
+                       asp-action="Index"
+                       class="btn admin-orange-button">
+                        Manage Foods →
+                    </a>
+                </article>
+
+                <!-- Category Management -->
+                <article class="admin-management-card">
+                    <div class="admin-card-icon">📁</div>
+                    <h3>Category Management</h3>
+                    <p>
+                        Organise the menu into categories and
+                        maintain their descriptions.
+                    </p>
+                    <a asp-controller="Categories"
+                       asp-action="Index"
+                       class="btn admin-orange-button">
+                        Manage Categories →
+                    </a>
+                </article>
+
+                <!-- Order Management -->
+                <article class="admin-management-card">
+                    <div class="admin-card-icon">📦</div>
+                    <h3>Order Management</h3>
+                    <p>
+                        Review customer orders and track their
+                        progress through the delivery process.
+                    </p>
+                    <a asp-controller="AdminOrders"
+                       asp-action="Index"
+                       class="btn admin-orange-button">
+                        Manage Orders →
+                    </a>
+                </article>
+
+                <!-- Customer Accounts -->
+                <article class="admin-management-card">
+                    <div class="admin-card-icon">👤</div>
+                    <h3>Customer Accounts</h3>
+                    <p>
+                        Review registered accounts and customer
+                        information.
+                    </p>
+                    <a asp-controller="Admin"
+                       asp-action="Users"
+                       class="btn admin-orange-button">
+                        View Users →
+                    </a>
+                </article>
+
+                <!-- Customer Menu -->
+                <article class="admin-management-card">
+                    <div class="admin-card-icon">🌐</div>
+                    <h3>Customer Menu</h3>
+                    <p>
+                        Open the public menu and see how customers
+                        browse the available food.
+                    </p>
+                    <a asp-controller="Foods"
+                       asp-action="Index"
+                       class="btn admin-orange-button">
+                        View Menu →
+                    </a>
+                </article>
+
+            </div>
+        </section>
+
+    </div>
+</div>
+
+<style>
+    .admin-dashboard-page {
+        background: #fff8f0;
+        min-height: 75vh;
+        padding-bottom: 40px;
+    }
+
+    .admin-dashboard-hero {
+        background: linear-gradient(120deg, #ff7417, #ed5100);
+        color: white;
+        padding: 32px;
+        border-radius: 18px;
+        margin-bottom: 30px;
+        box-shadow: 0 8px 20px rgba(220, 90, 0, 0.12);
+    }
+
+        .admin-dashboard-hero h1 {
+            font-size: 34px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .admin-dashboard-hero p {
+            margin: 0;
+            font-size: 16px;
+        }
+
+    .admin-management-section h2 {
+        font-size: 30px;
+        font-weight: 800;
+        color: #172b45;
+    }
+
+    .admin-section-description {
+        color: #64748b;
+        margin-bottom: 25px;
+    }
+
+    .admin-management-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 24px;
+    }
+
+    .admin-management-card {
+        background: white;
+        border: 1px solid #ffe2c5;
+        border-radius: 17px;
+        padding: 25px;
+        min-height: 255px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .admin-card-icon {
+        background: #fff0dc;
+        border-radius: 13px;
+        padding: 13px;
+        font-size: 24px;
+        margin-bottom: 16px;
+    }
+
+    .admin-management-card h3 {
+        color: #172b45;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .admin-management-card p {
+        color: #64748b;
+        line-height: 1.6;
+        flex-grow: 1;
+    }
+
+    .admin-orange-button {
+        background: #ff7417;
+        color: white;
+        border: none;
+        border-radius: 9px;
+        padding: 11px 18px;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+        .admin-orange-button:hover {
+            background: #e85b00;
+            color: white;
+        }
+
+    @@media (max-width: 900px) {
+        .admin-management-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @@media (max-width: 600px) {
+        .admin-management-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .admin-dashboard-hero h1 {
+            font-size: 27px;
+        }
+    }
+</style>

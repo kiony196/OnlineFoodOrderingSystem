@@ -1,0 +1,171 @@
+﻿
+@model List<OnlineFoodOrderingSystem.Models.CartItem>
+
+@{
+    ViewData["Title"] = "Shopping Cart";
+
+    decimal total = ViewBag.CartTotal is decimal value
+        ? value
+        : 0m;
+}
+
+<div class="container py-5 cart-page">
+
+    <div class="cart-heading">
+        <span class="menu-eyebrow">YOUR ORDER</span>
+        <h1>Shopping Cart</h1>
+        <p>Review your selection before checking out.</p>
+    </div>
+
+    @if (TempData["CartMessage"] != null)
+    {
+        <div class="alert alert-info">
+            @TempData["CartMessage"]
+        </div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="cart-empty">
+            <div class="cart-empty-icon">🛒</div>
+            <h2>Your cart is empty</h2>
+            <p>Explore our menu and add something delicious.</p>
+
+            <a asp-controller="Foods"
+               asp-action="Index"
+               class="btn cart-orange-button">
+                Explore Our Menu
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="cart-layout">
+
+            <div class="cart-items">
+
+                @foreach (var item in Model)
+                {
+                    <div class="cart-item">
+
+                        @if (!string.IsNullOrWhiteSpace(item.ImageUrl))
+                        {
+                            <img src="@item.ImageUrl"
+                                 alt="@item.FoodName"
+                                 class="cart-item-image" />
+                        }
+                        else
+                        {
+                            <div class="cart-item-placeholder">🍽️</div>
+                        }
+
+                        <div class="cart-item-details">
+                            <h3>@item.FoodName</h3>
+
+                            <p class="cart-item-price">
+                                Unit price: @item.UnitPrice.ToString("N2")
+                            </p>
+
+                            <form asp-controller="Cart"
+                                  asp-action="Update"
+                                  method="post"
+                                  class="cart-quantity-form">
+
+                                @Html.AntiForgeryToken()
+
+                                <input type="hidden"
+                                       name="foodId"
+                                       value="@item.FoodId" />
+
+                                <label for="quantity-@item.FoodId">
+                                    Quantity
+                                </label>
+
+                                <input id="quantity-@item.FoodId"
+                                       type="number"
+                                       name="quantity"
+                                       value="@item.Quantity"
+                                       min="0"
+                                       max="99"
+                                       required />
+
+                                <button type="submit"
+                                        class="btn cart-update-button">
+                                    Update
+                                </button>
+                            </form>
+
+                            <form asp-controller="Cart"
+                                  asp-action="Remove"
+                                  method="post">
+
+                                @Html.AntiForgeryToken()
+
+                                <input type="hidden"
+                                       name="foodId"
+                                       value="@item.FoodId" />
+
+                                <button type="submit"
+                                        class="cart-remove-button">
+                                    Remove item
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="cart-item-subtotal">
+                            @item.SubTotal.ToString("N2")
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+
+            <aside class="cart-summary">
+                <h2>Order Summary</h2>
+
+                <div class="summary-row">
+                    <span>Items</span>
+                    <span>@Model.Sum(x => x.Quantity)</span>
+                </div>
+
+                <div class="summary-row summary-total">
+                    <span>Total</span>
+                    <span>@total.ToString("N2")</span>
+                </div>
+
+                <p class="cart-summary-note">
+                    Delivery charges, if applicable, will be confirmed
+                    during checkout.
+                </p>
+
+                <a asp-controller="Checkout"
+                   asp-action="Index"
+                   class="btn cart-checkout-button">
+                    Proceed to Checkout
+                </a>
+
+                <a asp-controller="Foods"
+                   asp-action="Index"
+                   class="continue-shopping">
+                    ← Continue shopping
+                </a>
+
+                <form asp-controller="Cart"
+                      asp-action="Clear"
+                      method="post"
+                      class="clear-cart-form">
+
+                    @Html.AntiForgeryToken()
+
+                    <button type="submit"
+                            class="cart-remove-button">
+                        Clear cart
+                    </button>
+                </form>
+            </aside>
+
+        </div>
+    }
+
+</div>

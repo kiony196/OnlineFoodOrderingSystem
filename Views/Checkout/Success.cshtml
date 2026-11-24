@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Order Confirmed";
+}
+
+<div class="container py-5 text-center">
+    <div class="cart-empty">
+        <div class="cart-empty-icon">✅</div>
+
+        <h1>Order Placed Successfully!</h1>
+
+        <p>
+            Thank you for your order.
+            Your order number is
+            <strong>#@ViewBag.OrderId</strong>.
+        </p>
+
+        <p>Your order status is Pending.</p>
+
+        <a asp-controller="User"
+           asp-action="Index"
+           class="btn cart-orange-button">
+            Back to My Account
+        </a>
+
+        <a asp-controller="Foods"
+           asp-action="Index"
+           class="btn cart-update-button">
+            Continue Shopping
+        </a>
+    </div>
+</div>

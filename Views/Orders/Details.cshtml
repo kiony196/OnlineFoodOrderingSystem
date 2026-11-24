@@ -1,0 +1,58 @@
+﻿@model OnlineFoodOrderingSystem.Models.OrderViewModel
+
+@{
+    ViewData["Title"] = $"Order #{Model.OrderId}";
+}
+
+<div class="container py-5">
+    <div class="cart-heading">
+        <span class="menu-eyebrow">ORDER DETAILS</span>
+        <h1>Order #@Model.OrderId</h1>
+        <p>Placed on @Model.OrderDate.ToString("dd MMMM yyyy, HH:mm")</p>
+    </div>
+
+    <div class="cart-layout">
+        <section class="cart-summary">
+            <h2>Items Ordered</h2>
+
+            @foreach (var item in Model.Items)
+            {
+                <div class="summary-row">
+                    <span>
+                        @item.FoodName × @item.Quantity
+                        <small class="d-block">
+                            Unit price: @item.UnitPrice.ToString("N2")
+                        </small>
+                    </span>
+                    <strong>@item.SubTotal.ToString("N2")</strong>
+                </div>
+            }
+
+            <div class="summary-row summary-total">
+                <span>Total</span>
+                <span>@Model.TotalAmount.ToString("N2")</span>
+            </div>
+        </section>
+
+        <aside class="cart-summary">
+            <h2>Order Information</h2>
+
+            <p>
+                <strong>Status:</strong>
+                @Model.Status
+            </p>
+
+            <p>
+                <strong>Delivery Address:</strong>
+                <br />
+                @Model.DeliveryAddress
+            </p>
+
+            <a asp-controller="Orders"
+               asp-action="Index"
+               class="btn cart-orange-button">
+                Back to My Orders
+            </a>
+        </aside>
+    </div>
+</div>

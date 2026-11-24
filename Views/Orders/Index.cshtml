@@ -1,0 +1,73 @@
+﻿@model IEnumerable<OnlineFoodOrderingSystem.Models.OrderViewModel>
+
+@{
+    ViewData["Title"] = "My Orders";
+}
+
+<div class="container py-5">
+    <div class="cart-heading">
+        <span class="menu-eyebrow">YOUR ACCOUNT</span>
+        <h1>My Orders</h1>
+        <p>View your previous orders and track their status.</p>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="cart-empty">
+            <div class="cart-empty-icon">📦</div>
+            <h2>No orders yet</h2>
+            <p>Your orders will appear here after checkout.</p>
+
+            <a asp-controller="Foods"
+               asp-action="Index"
+               class="btn cart-orange-button">
+                Explore Our Menu
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th>Order</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model)
+                    {
+                        <tr>
+                            <td><strong>#@order.OrderId</strong></td>
+                            <td>@order.OrderDate.ToString("dd MMM yyyy, HH:mm")</td>
+                            <td>@order.TotalAmount.ToString("N2")</td>
+                            <td>
+                                <span class="badge bg-secondary">
+                                    @order.Status
+                                </span>
+                            </td>
+                            <td>
+                                <a asp-controller="Orders"
+                                   asp-action="Details"
+                                   asp-route-id="@order.OrderId"
+                                   class="btn cart-update-button">
+                                    View Details
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+    <a asp-controller="User"
+       asp-action="Index"
+       class="continue-shopping">
+        ← Back to My Account
+    </a>
+</div>

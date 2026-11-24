@@ -1,0 +1,181 @@
+﻿
+@model IEnumerable<OnlineFoodOrderingSystem.Models.Food>
+
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    ViewData["Title"] = "Our Menu";
+
+    var categories =
+        ViewBag.Categories as IEnumerable<SelectListItem>
+        ?? Enumerable.Empty<SelectListItem>();
+
+    var foodList = Model.ToList();
+}
+
+<div class="food-menu-page">
+
+    <!-- PAGE HEADER -->
+    <section class="food-menu-heading">
+        <span class="menu-eyebrow">MADE WITH LOVE 🍽️</span>
+        <h1>Discover Our Menu</h1>
+        <p>
+            Explore delicious meals and find your next favourite dish.
+        </p>
+    </section>
+
+    <!-- FILTER -->
+    <section class="food-filter-section">
+        <form asp-controller="Foods"
+              asp-action="Index"
+              method="get"
+              class="food-filter-form">
+
+            <div class="filter-field">
+                <label for="categoryId">Select a category</label>
+
+                <select id="categoryId"
+                        name="categoryId"
+                        class="form-select">
+
+                    <option value="">All categories</option>
+
+                    @foreach (var category in categories)
+                    {
+                        if (category.Selected)
+                        {
+                            <option value="@category.Value" selected>
+                                @category.Text
+                            </option>
+                        }
+                        else
+                        {
+                            <option value="@category.Value">
+                                @category.Text
+                            </option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <button type="submit" class="btn menu-filter-button">
+                Apply Filter
+            </button>
+
+            <a asp-controller="Foods"
+               asp-action="Index"
+               class="clear-filter-link">
+                Clear filter
+            </a>
+        </form>
+    </section>
+
+    <!-- FOOD RESULTS -->
+    <section class="food-results">
+
+        <div class="food-results-heading">
+            <h2>Our Delicious Food</h2>
+
+            <span>
+                @foodList.Count
+                @(foodList.Count == 1 ? "dish" : "dishes")
+                available
+            </span>
+        </div>
+
+        @if (foodList.Count == 0)
+        {
+            <div class="food-empty-state">
+                <div class="empty-food-icon">🍽️</div>
+
+                <h3>No dishes found</h3>
+
+                <p>
+                    There are no available dishes in this category.
+                    Try selecting another category.
+                </p>
+
+                <a asp-controller="Foods"
+                   asp-action="Index"
+                   class="btn menu-filter-button">
+                    View All Food
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="food-menu-grid">
+
+                @foreach (var food in foodList)
+                {
+                    <article class="food-menu-card">
+
+                        <div class="food-card-image-wrapper">
+
+                            @if (!string.IsNullOrWhiteSpace(food.ImageUrl))
+                            {
+                                <img src="@food.ImageUrl"
+                                     alt="@food.FoodName"
+                                     class="food-card-image" />
+                            }
+                            else
+                            {
+                                <div class="food-image-placeholder">
+                                    🍽️
+                                </div>
+                            }
+
+                            <span class="food-category-badge">
+                                @food.CategoryName
+                            </span>
+                        </div>
+
+                        <div class="food-card-content">
+
+                            <h3>@food.FoodName</h3>
+
+                            <p class="food-description">
+                                @(string.IsNullOrWhiteSpace(food.Description)
+                                    ? "Freshly prepared and ready to enjoy."
+                                    : food.Description)
+                            </p>
+
+                            <div class="food-card-footer">
+
+                                <span class="food-price">
+                                    @food.Price.ToString("N2")
+                                </span>
+
+                                <form asp-controller="Cart"
+                                      asp-action="Add"
+                                      method="post"
+                                      class="food-add-form">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <input type="hidden"
+                                           name="foodId"
+                                           value="@food.FoodId" />
+
+                                    <input type="hidden"
+                                           name="quantity"
+                                           value="1" />
+
+                                    <button type="submit"
+                                            class="btn food-add-button">
+                                        + Add to Cart
+                                    </button>
+                                </form>
+
+                            </div>
+                        </div>
+
+                    </article>
+                }
+
+            </div>
+        }
+
+    </section>
+
+</div>

@@ -1,0 +1,135 @@
+﻿
+@{
+    ViewData["Title"] = "Home";
+}
+
+<section class="home-hero">
+    <div class="hero-content">
+        <span class="hero-label">🍽️ GOOD FOOD, GOOD MOOD</span>
+
+        <h1>
+            Delicious food,<br />
+            <span>delivered to you.</span>
+        </h1>
+
+        <p>
+            Discover your favourite meals, explore delicious flavours
+            and enjoy great food delivered right to your door.
+        </p>
+
+        <div class="hero-actions">
+            <a asp-controller="Foods"
+               asp-action="Index"
+               class="btn btn-food-primary">
+                Explore Our Menu →
+            </a>
+
+            <a asp-controller="Categories"
+               asp-action="Index"
+               class="btn btn-food-secondary">
+                Browse Categories
+            </a>
+        </div>
+
+        <div class="hero-features">
+            <div>
+                <strong>🍔</strong>
+                <span>Fresh meals</span>
+            </div>
+            <div>
+                <strong>⚡</strong>
+                <span>Easy ordering</span>
+            </div>
+            <div>
+                <strong>❤️</strong>
+                <span>Made with love</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-image">
+        <img src="~/images/pizza.jpg"
+             alt="Delicious freshly prepared pizza" />
+
+        <div class="hero-image-card">
+            <span class="floating-icon">🍕</span>
+            <div>
+                <strong>Craving something delicious?</strong>
+                <p>Your next favourite meal is waiting!</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="home-categories">
+    <div class="section-heading">
+        <div>
+            <span class="section-eyebrow">EXPLORE OUR SELECTION</span>
+            <h2>What are you craving today?</h2>
+            <p>Find something delicious for every moment.</p>
+        </div>
+
+        <a asp-controller="Foods"
+           asp-action="Index"
+           class="view-menu-link">
+            View full menu →
+        </a>
+    </div>
+
+    <div class="food-category-grid">
+        <a asp-controller="Foods"
+           asp-action="Index"
+           class="food-category-card">
+            <img src="~/images/burger.jpg" alt="Burger" />
+            <div class="category-card-info">
+                <h3>Burgers</h3>
+                <span>Discover more →</span>
+            </div>
+        </a>
+
+        <a asp-controller="Foods"
+           asp-action="Index"
+           class="food-category-card">
+            <img src="~/images/pizza.jpg" alt="Pizza" />
+            <div class="category-card-info">
+                <h3>Pizza</h3>
+                <span>Discover more →</span>
+            </div>
+        </a>
+
+        <a asp-controller="Foods"
+           asp-action="Index"
+           class="food-category-card">
+            <img src="~/images/portuguese-food.jpg"
+                 alt="Portuguese food" />
+            <div class="category-card-info">
+                <h3>Local Favourites</h3>
+                <span>Discover more →</span>
+            </div>
+        </a>
+
+        <a asp-controller="Foods"
+           asp-action="Index"
+           class="food-category-card">
+            <img src="~/images/dessert.jpg" alt="Dessert" />
+            <div class="category-card-info">
+                <h3>Desserts</h3>
+                <span>Discover more →</span>
+            </div>
+        </a>
+    </div>
+</section>
+
+<section class="home-cta">
+    <div>
+        <span>YOUR NEXT MEAL IS JUST A CLICK AWAY</span>
+        <h2>Good food makes every day better.</h2>
+        <p>Explore the menu and find your next favourite dish.</p>
+    </div>
+
+    <a asp-controller="Foods"
+       asp-action="Index"
+       class="btn btn-cta">
+        Order Your Favourite Food →
+    </a>
+</section>

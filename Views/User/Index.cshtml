@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "My Account";
+}
+
+<div class="container py-5">
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+            <h1 class="fw-bold">Welcome, @User.Identity?.Name!</h1>
+
+            <p class="text-muted">
+                Welcome to your customer account.
+                Browse our menu and discover your favourite food.
+            </p>
+
+            <div class="d-flex flex-wrap gap-2 mt-4">
+                <a asp-controller="Foods"
+                   asp-action="Index"
+                   class="btn btn-primary">
+                    Browse Menu
+                </a>
+
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   class="btn btn-outline-secondary">
+                    Home
+                </a>
+            </div>
+
+            <hr class="my-4" />
+
+            
+            <div class="mt-4 pt-4 border-top">
+                <h2>My Orders</h2>
+                <p>
+                    View your previous orders and track their status.
+                </p>
+
+                <a asp-controller="Orders"
+                   asp-action="Index"
+                   class="btn cart-orange-button">
+                    View My Orders
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>

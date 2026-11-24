@@ -1,0 +1,20 @@
+﻿# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build files
+bin/
+obj/
+Debug/
+Release/
+
+# Temporary files
+*.tmp
+*.log
+
+# IDE folders
+.idea/
+
+# Development configuration
+appsettings.Development.json

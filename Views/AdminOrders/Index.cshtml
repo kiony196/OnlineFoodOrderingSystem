@@ -1,0 +1,145 @@
+﻿@model IEnumerable<OnlineFoodOrderingSystem.Models.OrderViewModel>
+
+@{
+    ViewData["Title"] = "Manage Orders";
+
+    var statuses = ViewBag.AllStatuses as string[]
+        ?? new[]
+        {
+            "Pending",
+            "Confirmed",
+            "Preparing",
+            "Out for Delivery",
+            "Delivered",
+            "Cancelled"
+        };
+}
+
+<div class="container py-5">
+    <div class="cart-heading">
+        <span class="menu-eyebrow">ADMINISTRATION</span>
+        <h1>Manage Orders</h1>
+        <p>View customer orders and manage their status.</p>
+    </div>
+
+    @if (TempData["AdminOrderMessage"] != null)
+    {
+        <div class="alert alert-info" role="alert">
+            @TempData["AdminOrderMessage"]
+        </div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="cart-empty">
+            <div class="cart-empty-icon">📦</div>
+            <h2>No orders found</h2>
+            <p>Customer orders will appear here.</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th>Order</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                        <th>Current Status</th>
+                        <th>Update Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var order in Model)
+                    {
+                        <tr>
+                            <td>
+                                <strong>#@order.OrderId</strong>
+                            </td>
+
+                            <td>
+                                <strong>@order.CustomerName</strong>
+                                <br />
+                                <small class="text-muted">
+                                    @order.CustomerEmail
+                                </small>
+                                <br />
+                                <small>
+                                    @order.DeliveryAddress
+                                </small>
+                            </td>
+
+                            <td>
+                                @order.OrderDate.ToString("dd MMM yyyy, HH:mm")
+                            </td>
+
+                            <td>
+                                <strong>
+                                    @order.TotalAmount.ToString("N2")
+                                </strong>
+                            </td>
+
+                            <td>
+                                <span class="badge bg-secondary">
+                                    @order.Status
+                                </span>
+                            </td>
+
+                            <td>
+                                <form asp-controller="AdminOrders"
+                                      asp-action="UpdateStatus"
+                                      method="post"
+                                      class="d-flex flex-wrap gap-2">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <input type="hidden"
+                                           name="orderId"
+                                           value="@order.OrderId" />
+
+                                    <select name="status"
+                                            class="form-select"
+                                            aria-label="Status for order @order.OrderId"
+                                            required>
+                                        @foreach (var statusOption in statuses)
+                                        {
+                                            if (statusOption == order.Status)
+                                            {
+                                                <option value="@statusOption"
+                                                        selected>
+                                                    @statusOption
+                                                </option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@statusOption">
+                                                    @statusOption
+                                                </option>
+                                            }
+                                        }
+                                    </select>
+
+                                    <button type="submit"
+                                            class="btn cart-update-button">
+                                        Save
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+    <div class="mt-4">
+        <a asp-controller="Admin"
+           asp-action="Index"
+           class="continue-shopping">
+            ← Back to Admin Dashboard
+        </a>
+    </div>
+</div>
