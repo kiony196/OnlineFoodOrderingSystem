@@ -126,7 +126,8 @@ namespace OnlineFoodOrderingSystem.Controllers
 
                 return RedirectToAction(nameof(Login));
             }
-            catch (SqlException ex) when (ex.Number == 2601 || ex.Number == 2627)
+            catch (SqlException ex) when (
+                ex.Number == 2601 || ex.Number == 2627)
             {
                 ModelState.AddModelError(
                     "Email",
@@ -181,9 +182,16 @@ namespace OnlineFoodOrderingSystem.Controllers
                 await connection.OpenAsync();
 
                 const string sql = @"
-                    SELECT UserId, FullName, Email,
-                           PasswordHash, Phone, Address,
-                           Role, CreatedAt
+                    SELECT
+                        UserId,
+                        FullName,
+                        Email,
+                        PasswordHash,
+                        Phone,
+                        Address,
+                        Role,
+                        CreatedAt,
+                        IsActive
                     FROM Users
                     WHERE Email = @Email;";
 
@@ -209,7 +217,8 @@ namespace OnlineFoodOrderingSystem.Controllers
                         Address = reader.IsDBNull(5)
                             ? null : reader.GetString(5),
                         Role = reader.GetString(6),
-                        CreatedAt = reader.GetDateTime(7)
+                        CreatedAt = reader.GetDateTime(7),
+                        IsActive = reader.GetBoolean(8)
                     };
                 }
 
@@ -234,33 +243,16 @@ namespace OnlineFoodOrderingSystem.Controllers
                     return View();
                 }
 
-                var claims = new List<Claim>
+                // Block inactive customer accounts.
+                if (user.Role == "Customer" && !user.IsActive)
                 {
-                    new Claim(
-                        ClaimTypes.NameIdentifier,
-                        user.UserId.ToString()),
+                    ModelState.AddModelError(
+                        string.Empty,
+                        "Your account has been deactivated. " +
+                        "Please contact the administrator.");
 
-                    new Claim(ClaimTypes.Name, user.FullName),
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, user.Role)
-                };
-
-                var identity = new ClaimsIdentity(
-                    claims,
-                    CookieAuthenticationDefaults.AuthenticationScheme);
-
-                var principal = new ClaimsPrincipal(identity);
-
-                await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    principal,
-                    new AuthenticationProperties
-                    {
-                        IsPersistent = true,
-                        AllowRefresh = true,
-                        ExpiresUtc = DateTimeOffset.UtcNow
-                            .AddMinutes(30)
-                    });
+                    return View();
+                }
 
                 // Upgrade older password hashes when necessary.
                 if (verification ==
@@ -290,6 +282,34 @@ namespace OnlineFoodOrderingSystem.Controllers
 
                     await updateCommand.ExecuteNonQueryAsync();
                 }
+
+                var claims = new List<Claim>
+                {
+                    new Claim(
+                        ClaimTypes.NameIdentifier,
+                        user.UserId.ToString()),
+
+                    new Claim(ClaimTypes.Name, user.FullName),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Role, user.Role)
+                };
+
+                var identity = new ClaimsIdentity(
+                    claims,
+                    CookieAuthenticationDefaults.AuthenticationScheme);
+
+                var principal = new ClaimsPrincipal(identity);
+
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    principal,
+                    new AuthenticationProperties
+                    {
+                        IsPersistent = true,
+                        AllowRefresh = true,
+                        ExpiresUtc = DateTimeOffset.UtcNow
+                            .AddMinutes(30)
+                    });
 
                 if (!string.IsNullOrWhiteSpace(returnUrl) &&
                     Url.IsLocalUrl(returnUrl))

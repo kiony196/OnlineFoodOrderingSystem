@@ -33,5 +33,8 @@ namespace OnlineFoodOrderingSystem.Models
         public string Role { get; set; } = "Customer";
 
         public DateTime CreatedAt { get; set; }
+
+        // Indicates whether the account is active.
+        public bool IsActive { get; set; } = true;
     }
 }

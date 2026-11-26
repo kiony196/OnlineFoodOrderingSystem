@@ -6,7 +6,7 @@
 
 <div class="container py-4">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
         <div>
             <h2 class="fw-bold">Customer Details</h2>
             <p class="text-muted mb-0">
@@ -14,15 +14,47 @@
             </p>
         </div>
 
-        <a asp-controller="Admin"
-           asp-action="Users"
-           class="btn btn-outline-secondary">
-            <i class="bi bi-arrow-left"></i> Back to Customers
-        </a>
+        <div class="d-flex gap-2 flex-wrap">
+            <a asp-controller="Admin"
+               asp-action="Edit"
+               asp-route-id="@Model.Customer.UserId"
+               class="btn btn-warning fw-semibold">
+                <i class="bi bi-pencil-square"></i> Edit Customer
+            </a>
+
+            <a asp-controller="Admin"
+               asp-action="Users"
+               class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Back to Customers
+            </a>
+        </div>
     </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            @TempData["Success"]
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+            </button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            @TempData["Error"]
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+            </button>
+        </div>
+    }
 
     <!-- CUSTOMER INFORMATION -->
     <div class="card shadow-sm border-0 mb-4">
+
         <div class="card-header bg-dark text-white py-3">
             <h5 class="mb-0">Customer Information</h5>
         </div>
@@ -62,9 +94,11 @@
 
                 <div class="col-md-6">
                     <small class="text-muted">Account Type</small>
-                    <span class="badge bg-success">
-                        @Model.Customer.Role
-                    </span>
+                    <div>
+                        <span class="badge bg-success">
+                            @Model.Customer.Role
+                        </span>
+                    </div>
                 </div>
 
             </div>
@@ -102,6 +136,7 @@
 
     <!-- ORDER HISTORY -->
     <div class="card shadow-sm border-0">
+
         <div class="card-header bg-dark text-white py-3">
             <h5 class="mb-0">Order History</h5>
         </div>
@@ -185,6 +220,7 @@
                         {
                             <div class="table-responsive">
                                 <table class="table table-bordered table-hover align-middle">
+
                                     <thead class="table-light">
                                         <tr>
                                             <th>Food ID</th>
@@ -207,6 +243,7 @@
                                             </tr>
                                         }
                                     </tbody>
+
                                 </table>
                             </div>
                         }
