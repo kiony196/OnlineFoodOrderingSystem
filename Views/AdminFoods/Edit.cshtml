@@ -1,0 +1,154 @@
+﻿@model OnlineFoodOrderingSystem.Models.Food
+
+@{
+    ViewData["Title"] = "Edit Food";
+}
+
+<div class="container py-4">
+
+    <div class="mb-4">
+        <h2 class="fw-bold">Edit Food</h2>
+        <p class="text-muted">
+            Update the information of this food item.
+        </p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+
+            <form asp-controller="AdminFoods"
+                  asp-action="Edit"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" asp-for="FoodId" />
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="FoodName"
+                           class="form-label">
+                        Food Name
+                    </label>
+
+                    <input asp-for="FoodName"
+                           class="form-control" />
+
+                    <span asp-validation-for="FoodName"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CategoryId"
+                           class="form-label">
+                        Category
+                    </label>
+
+                    <select asp-for="CategoryId"
+                            asp-items="ViewBag.Categories"
+                            class="form-select">
+                        <option value="">
+                            -- Select Category --
+                        </option>
+                    </select>
+
+                    <span asp-validation-for="CategoryId"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description"
+                           class="form-label">
+                        Description
+                    </label>
+
+                    <textarea asp-for="Description"
+                              class="form-control"
+                              rows="3"></textarea>
+
+                    <span asp-validation-for="Description"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Price"
+                           class="form-label">
+                        Price
+                    </label>
+
+                    <input asp-for="Price"
+                           type="number"
+                           step="0.01"
+                           min="0.01"
+                           class="form-control" />
+
+                    <span asp-validation-for="Price"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ImageUrl"
+                           class="form-label">
+                        Image URL
+                    </label>
+
+                    <input asp-for="ImageUrl"
+                           class="form-control" />
+
+                    <span asp-validation-for="ImageUrl"
+                          class="text-danger"></span>
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <div class="mb-3">
+                        <label class="form-label">
+                            Current Image
+                        </label>
+
+                        <div>
+                            <img src="@Model.ImageUrl"
+                                 alt="@Model.FoodName"
+                                 style="width:150px;height:120px;object-fit:cover;border-radius:10px;" />
+                        </div>
+                    </div>
+                }
+
+                <div class="form-check mb-4">
+
+                    <input asp-for="IsAvailable"
+                           class="form-check-input" />
+
+                    <label asp-for="IsAvailable"
+                           class="form-check-label">
+                        Available for customers
+                    </label>
+
+                </div>
+
+                <div class="d-flex gap-2">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Save Changes
+                    </button>
+
+                    <a asp-controller="AdminFoods"
+                       asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

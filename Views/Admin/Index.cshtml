@@ -26,12 +26,15 @@
                 <!-- Food Management -->
                 <article class="admin-management-card">
                     <div class="admin-card-icon">🍽️</div>
+
                     <h3>Food Management</h3>
+
                     <p>
                         Add new dishes, update prices, change images
                         and manage food availability.
                     </p>
-                    <a asp-controller="Foods"
+
+                    <a asp-controller="AdminFoods"
                        asp-action="Index"
                        class="btn admin-orange-button">
                         Manage Foods →
@@ -41,12 +44,15 @@
                 <!-- Category Management -->
                 <article class="admin-management-card">
                     <div class="admin-card-icon">📁</div>
+
                     <h3>Category Management</h3>
+
                     <p>
                         Organise the menu into categories and
                         maintain their descriptions.
                     </p>
-                    <a asp-controller="Categories"
+
+                    <a asp-controller="AdminCategories"
                        asp-action="Index"
                        class="btn admin-orange-button">
                         Manage Categories →
@@ -56,11 +62,14 @@
                 <!-- Order Management -->
                 <article class="admin-management-card">
                     <div class="admin-card-icon">📦</div>
+
                     <h3>Order Management</h3>
+
                     <p>
                         Review customer orders and track their
                         progress through the delivery process.
                     </p>
+
                     <a asp-controller="AdminOrders"
                        asp-action="Index"
                        class="btn admin-orange-button">
@@ -71,11 +80,14 @@
                 <!-- Customer Accounts -->
                 <article class="admin-management-card">
                     <div class="admin-card-icon">👤</div>
+
                     <h3>Customer Accounts</h3>
+
                     <p>
                         Review registered accounts and customer
                         information.
                     </p>
+
                     <a asp-controller="Admin"
                        asp-action="Users"
                        class="btn admin-orange-button">
@@ -86,11 +98,14 @@
                 <!-- Customer Menu -->
                 <article class="admin-management-card">
                     <div class="admin-card-icon">🌐</div>
+
                     <h3>Customer Menu</h3>
+
                     <p>
                         Open the public menu and see how customers
                         browse the available food.
                     </p>
+
                     <a asp-controller="Foods"
                        asp-action="Index"
                        class="btn admin-orange-button">

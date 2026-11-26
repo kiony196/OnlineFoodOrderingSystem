@@ -26,9 +26,9 @@ namespace OnlineFoodOrderingSystem.Models
         [StringLength(255)]
         public string? ImageUrl { get; set; }
 
+        // New food items are available by default.
         public bool IsAvailable { get; set; } = true;
 
-        // Category information for displaying food items
         public string? CategoryName { get; set; }
     }
 }

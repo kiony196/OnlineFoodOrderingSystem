@@ -1,0 +1,102 @@
+﻿@model OnlineFoodOrderingSystem.Models.Food
+
+@{
+    ViewData["Title"] = "Food Details";
+}
+
+<div class="container py-4">
+
+    <div class="mb-4">
+        <h2 class="fw-bold">Food Details</h2>
+        <p class="text-muted">
+            Complete information about this food item.
+        </p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <div class="mb-4 text-center">
+                    <img src="@Model.ImageUrl"
+                         alt="@Model.FoodName"
+                         style="width:220px;height:180px;object-fit:cover;border-radius:12px;" />
+                </div>
+            }
+
+            <dl class="row">
+
+                <dt class="col-sm-3">Food ID</dt>
+                <dd class="col-sm-9">@Model.FoodId</dd>
+
+                <dt class="col-sm-3">Food Name</dt>
+                <dd class="col-sm-9">@Model.FoodName</dd>
+
+                <dt class="col-sm-3">Category</dt>
+                <dd class="col-sm-9">@Model.CategoryName</dd>
+
+                <dt class="col-sm-3">Description</dt>
+                <dd class="col-sm-9">
+                    @(string.IsNullOrWhiteSpace(Model.Description)
+                        ? "No description available."
+                        : Model.Description)
+                </dd>
+
+                <dt class="col-sm-3">Price</dt>
+                <dd class="col-sm-9">
+                    $@Model.Price.ToString("0.00")
+                </dd>
+
+                <dt class="col-sm-3">Availability</dt>
+                <dd class="col-sm-9">
+                    @if (Model.IsAvailable)
+                    {
+                        <span class="badge bg-success">
+                            Available
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">
+                            Unavailable
+                        </span>
+                    }
+                </dd>
+
+                <dt class="col-sm-3">Image URL</dt>
+                <dd class="col-sm-9">
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <a href="@Model.ImageUrl"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            View Image
+                        </a>
+                    }
+                    else
+                    {
+                        <span>No image</span>
+                    }
+                </dd>
+
+            </dl>
+
+            <div class="d-flex gap-2 mt-4">
+
+                <a asp-action="Edit"
+                   asp-route-id="@Model.FoodId"
+                   class="btn btn-warning">
+                    Edit Food
+                </a>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary">
+                    Back to Food Management
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,229 @@
+﻿@model OnlineFoodOrderingSystem.Models.CustomerDetailsViewModel
+
+@{
+    ViewData["Title"] = "Customer Details";
+}
+
+<div class="container py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold">Customer Details</h2>
+            <p class="text-muted mb-0">
+                Customer account information and order history
+            </p>
+        </div>
+
+        <a asp-controller="Admin"
+           asp-action="Users"
+           class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Customers
+        </a>
+    </div>
+
+    <!-- CUSTOMER INFORMATION -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-dark text-white py-3">
+            <h5 class="mb-0">Customer Information</h5>
+        </div>
+
+        <div class="card-body">
+            <div class="row g-4">
+
+                <div class="col-md-6">
+                    <small class="text-muted">Customer ID</small>
+                    <h6>@Model.Customer.UserId</h6>
+                </div>
+
+                <div class="col-md-6">
+                    <small class="text-muted">Full Name</small>
+                    <h6>@Model.Customer.FullName</h6>
+                </div>
+
+                <div class="col-md-6">
+                    <small class="text-muted">Email Address</small>
+                    <h6>@Model.Customer.Email</h6>
+                </div>
+
+                <div class="col-md-6">
+                    <small class="text-muted">Phone Number</small>
+                    <h6>@(Model.Customer.Phone ?? "Not provided")</h6>
+                </div>
+
+                <div class="col-md-6">
+                    <small class="text-muted">Address</small>
+                    <h6>@(Model.Customer.Address ?? "Not provided")</h6>
+                </div>
+
+                <div class="col-md-6">
+                    <small class="text-muted">Registration Date</small>
+                    <h6>@Model.Customer.CreatedAt.ToString("dd MMM yyyy")</h6>
+                </div>
+
+                <div class="col-md-6">
+                    <small class="text-muted">Account Type</small>
+                    <span class="badge bg-success">
+                        @Model.Customer.Role
+                    </span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ORDER STATISTICS -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <small class="text-muted">Total Orders</small>
+                    <h3 class="fw-bold mt-2">
+                        @Model.TotalOrders
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <small class="text-muted">
+                        Total Spent (excluding cancelled orders)
+                    </small>
+                    <h3 class="fw-bold mt-2 text-success">
+                        $@Model.TotalSpent.ToString("N2")
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ORDER HISTORY -->
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-dark text-white py-3">
+            <h5 class="mb-0">Order History</h5>
+        </div>
+
+        <div class="card-body">
+
+            @if (Model.Orders == null || !Model.Orders.Any())
+            {
+                <div class="text-center py-5">
+                    <h5 class="text-muted">No orders found</h5>
+                    <p class="text-muted mb-0">
+                        This customer has not placed any orders yet.
+                    </p>
+                </div>
+            }
+            else
+            {
+                @foreach (var order in Model.Orders)
+                {
+                    <div class="border rounded p-3 mb-4">
+
+                        <div class="row align-items-center g-3 mb-3">
+
+                            <div class="col-md-3">
+                                <small class="text-muted">Order ID</small>
+                                <h6>#@order.OrderId</h6>
+                            </div>
+
+                            <div class="col-md-3">
+                                <small class="text-muted">Order Date</small>
+                                <h6>
+                                    @order.OrderDate.ToString("dd MMM yyyy, HH:mm")
+                                </h6>
+                            </div>
+
+                            <div class="col-md-3">
+                                <small class="text-muted">Total Amount</small>
+                                <h6>$@order.TotalAmount.ToString("N2")</h6>
+                            </div>
+
+                            <div class="col-md-3">
+                                <small class="text-muted">Status</small>
+                                <div>
+                                    @if (order.Status == "Delivered")
+                                    {
+                                        <span class="badge bg-success">
+                                            Delivered
+                                        </span>
+                                    }
+                                    else if (order.Status == "Cancelled")
+                                    {
+                                        <span class="badge bg-danger">
+                                            Cancelled
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning text-dark">
+                                            @order.Status
+                                        </span>
+                                    }
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="mb-3">
+                            <small class="text-muted">Delivery Address</small>
+                            <p class="mb-0">@order.DeliveryAddress</p>
+                        </div>
+
+                        <h6 class="fw-bold mb-3">Ordered Items</h6>
+
+                        @if (order.Items == null || !order.Items.Any())
+                        {
+                            <p class="text-muted">
+                                No product details available.
+                            </p>
+                        }
+                        else
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Food ID</th>
+                                            <th>Food Name</th>
+                                            <th>Quantity</th>
+                                            <th>Unit Price</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @foreach (var item in order.Items)
+                                        {
+                                            <tr>
+                                                <td>@item.FoodId</td>
+                                                <td>@item.FoodName</td>
+                                                <td>@item.Quantity</td>
+                                                <td>$@item.UnitPrice.ToString("N2")</td>
+                                                <td>$@item.SubTotal.ToString("N2")</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+
+                    </div>
+                }
+            }
+
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-controller="Admin"
+           asp-action="Users"
+           class="btn btn-outline-secondary">
+            Back to Customer Accounts
+        </a>
+    </div>
+
+</div>
